@@ -104,8 +104,3 @@ See `DOCKER_IMPROVEMENTS.md` for full setup.
 
 - Local deployment only (no cloud hosting)
 - No user authentication (public API, suitable for assignment scope)
-- Mac M-series Docker may use emulation (see DOCKER_IMPROVEMENTS.md)
-
-## License
-
-Educational project for Web Mapping module (Assignment 1)
