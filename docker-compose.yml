@@ -1,0 +1,119 @@
+networks:
+  dae_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+services:
+  db:
+    platform: linux/amd64
+    image: postgis/postgis:16-3.5
+    container_name: lbs_db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-dae_db}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      dae_net:
+        ipv4_address: 172.28.0.2
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lbs_web
+    environment:
+      DB_NAME: ${DB_NAME:-dae_db}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_HOST: db
+      DB_PORT: "5432"
+      DEBUG: "False"
+      ALLOWED_HOSTS: "localhost,127.0.0.1,web,nginx"
+      SECURE_SSL_REDIRECT: "False"
+      SESSION_COOKIE_SECURE: "False"
+      CSRF_COOKIE_SECURE: "False"
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+    networks:
+      dae_net:
+        ipv4_address: 172.28.0.3
+    expose:
+      - "8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py loaddata geo/fixtures/dcc_admin_areas.json &&
+             python manage.py loaddata geo/fixtures/amenities_sample.json &&
+             python manage.py import_routes &&
+             python manage.py collectstatic --noinput --clear &&
+             gunicorn --bind 0.0.0.0:8000 --workers 4 --worker-class sync --timeout 60 --access-logfile - --error-logfile - lbs.wsgi:application"
+
+  nginx:
+    platform: linux/amd64
+    image: nginx:latest
+    container_name: lbs_nginx
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_volume:/app/staticfiles:ro
+    networks:
+      dae_net:
+        ipv4_address: 172.28.0.4
+    ports:
+      - "8080:80"
+    depends_on:
+      web:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # pgadmin:
+  #   image: dpage/pgadmin4:8.6
+  #   container_name: lbs_pgadmin
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@example.com}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+  #     PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
+  #     PGADMIN_CONFIG_COOKIE_DEFAULT_SECURE: "False"
+  #     PGADMIN_CONFIG_COOKIE_SAMESITE: "Lax"
+  #   networks:
+  #     dae_net:
+  #       ipv4_address: 172.28.0.5
+  #   ports:
+  #     - "5050:80"
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   restart: unless-stopped
+
+volumes:
+  db_data:
+    driver: local
+  static_volume:
+    driver: local

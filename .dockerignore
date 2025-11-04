@@ -1,0 +1,42 @@
+# python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# django stuff
+*.log
+db.sqlite3
+staticfiles/
+
+# git
+.git/
+.gitignore
+
+# ide
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macos
+.DS_Store
+
+# documentation
+*.md
+!README.md
+docs/
+
+# test data that you might not want in image
+lectures/
+scripts/
+
+# local env file (use docker-compose env vars instead)
+.env

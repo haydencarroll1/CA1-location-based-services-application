@@ -6,9 +6,12 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
-# GDAL library path for macOS ARM64 (Apple Silicon)
-GDAL_LIBRARY_PATH = os.getenv("GDAL_LIBRARY_PATH", "/opt/homebrew/lib/libgdal.dylib")
-GEOS_LIBRARY_PATH = os.getenv("GEOS_LIBRARY_PATH", "/opt/homebrew/lib/libgeos_c.dylib")
+# GDAL library path (only set in .env for local macOS development)
+# In Docker, GDAL is installed system-wide and doesn't need explicit paths
+if "GDAL_LIBRARY_PATH" in os.environ:
+    GDAL_LIBRARY_PATH = os.getenv("GDAL_LIBRARY_PATH")
+if "GEOS_LIBRARY_PATH" in os.environ:
+    GEOS_LIBRARY_PATH = os.getenv("GEOS_LIBRARY_PATH")
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
@@ -31,14 +34,12 @@ INSTALLED_APPS = [
     "django.contrib.gis",          # GeoDjango
     "rest_framework",              # DRF
     "rest_framework_gis",          # GeoJSON serializers
-    "django_filters",              # Filtering
-    "corsheaders",                 # CORS (local dev)
     "geo",
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -94,20 +95,29 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CORS_ALLOW_ALL_ORIGINS = DEBUG
-if not CORS_ALLOW_ALL_ORIGINS:
-    cors_origins = os.getenv("CORS_ALLOWED_ORIGINS", "")
-    CORS_ALLOWED_ORIGINS = [o.strip() for o in cors_origins.split(",") if o.strip()]
-    if not CORS_ALLOWED_ORIGINS:
-        raise ImproperlyConfigured("CORS_ALLOWED_ORIGINS must be defined when DEBUG is False.")
-
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
-    ],
-    "DEFAULT_FILTER_BACKENDS": [
-        "django_filters.rest_framework.DjangoFilterBackend",
-        "rest_framework.filters.SearchFilter",
-        "rest_framework.filters.OrderingFilter",
+        "rest_framework.permissions.AllowAny",
     ],
 }
+
+# Production security settings
+SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "False").lower() == "true"
+SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "False").lower() == "true"
+CSRF_COOKIE_SECURE = os.getenv("CSRF_COOKIE_SECURE", "False").lower() == "true"
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_SECURITY_POLICY = {
+    "default-src": ("'self'",),
+    "script-src": ("'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "unpkg.com"),
+    "style-src": ("'self'", "'unsafe-inline'", "cdn.jsdelivr.net"),
+    "img-src": ("'self'", "data:", "*.tile.openstreetmap.org"),
+    "font-src": ("'self'",),
+}
+
+# Static files
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

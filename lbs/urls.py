@@ -19,7 +19,8 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from geo.views import (
     AmenityViewSet, AreaViewSet, RouteViewSet,
-    NearestAmenities, AmenitiesWithinArea, RoutesIntersectingArea, AmenitiesWithinRadius
+    NearestAmenities, AmenitiesWithinArea, RoutesIntersectingArea, 
+    AmenitiesWithinRadius, RoutesWithinRadius
 )
 
 router = DefaultRouter()
@@ -34,5 +35,6 @@ urlpatterns = [
     path("api/amenities/within", AmenitiesWithinArea.as_view()),
     path("api/amenities/radius", AmenitiesWithinRadius.as_view()),
     path("api/routes/intersecting", RoutesIntersectingArea.as_view()),
+    path("api/routes/radius", RoutesWithinRadius.as_view()),
     path("", include("geo.urls")),
 ]

@@ -1,0 +1,252 @@
+[
+  {
+    "model": "geo.amenity",
+    "pk": 1,
+    "fields": {
+      "name": "3fe Grand Canal",
+      "category": "cafe",
+      "location": "SRID=4326;POINT(-6.2477 53.3434)",
+      "description": "Specialty coffee roastery beside the canal"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 2,
+    "fields": {
+      "name": "Bewley's Grafton Street",
+      "category": "cafe",
+      "location": "SRID=4326;POINT(-6.2593 53.3437)",
+      "description": "Historic caf\u00e9 serving tea and pastries"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 3,
+    "fields": {
+      "name": "Queen of Tarts",
+      "category": "cafe",
+      "location": "SRID=4326;POINT(-6.2654 53.3445)",
+      "description": "Bakery caf\u00e9 famous for desserts"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 4,
+    "fields": {
+      "name": "Herbstreet",
+      "category": "cafe",
+      "location": "SRID=4326;POINT(-6.2502 53.3391)",
+      "description": "Brunch spot overlooking Grand Canal Dock"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 5,
+    "fields": {
+      "name": "Brother Hubbard North",
+      "category": "cafe",
+      "location": "SRID=4326;POINT(-6.246 53.3483)",
+      "description": "Middle Eastern inspired caf\u00e9"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 6,
+    "fields": {
+      "name": "The Temple Bar Pub",
+      "category": "cafe",
+      "location": "SRID=4326;POINT(-6.2619 53.3473)",
+      "description": "Iconic pub with coffee and light bites"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 7,
+    "fields": {
+      "name": "SPAR Dame Street",
+      "category": "shop",
+      "location": "SRID=4326;POINT(-6.2641 53.3479)",
+      "description": "Convenience store beside Trinity College"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 8,
+    "fields": {
+      "name": "Fresh Grand Canal",
+      "category": "shop",
+      "location": "SRID=4326;POINT(-6.2425 53.3444)",
+      "description": "Modern supermarket near the tech district"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 9,
+    "fields": {
+      "name": "Tesco Parnell Street",
+      "category": "shop",
+      "location": "SRID=4326;POINT(-6.2721 53.3556)",
+      "description": "Large supermarket on Parnell Street"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 10,
+    "fields": {
+      "name": "Lidl North Strand",
+      "category": "shop",
+      "location": "SRID=4326;POINT(-6.2288 53.3489)",
+      "description": "Discount supermarket serving East Wall"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 11,
+    "fields": {
+      "name": "SuperValu Lucan",
+      "category": "shop",
+      "location": "SRID=4326;POINT(-6.3437 53.3743)",
+      "description": "Community supermarket in Lucan village"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 12,
+    "fields": {
+      "name": "Flyefit Macken Street",
+      "category": "gym",
+      "location": "SRID=4326;POINT(-6.247 53.338)",
+      "description": "24/7 city centre gym"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 13,
+    "fields": {
+      "name": "Flyefit George's Street",
+      "category": "gym",
+      "location": "SRID=4326;POINT(-6.2695 53.3385)",
+      "description": "Gym with studio classes and weights"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 14,
+    "fields": {
+      "name": "Ben Dunne Gym Northwood",
+      "category": "gym",
+      "location": "SRID=4326;POINT(-6.2419 53.3553)",
+      "description": "Large suburban gym"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 15,
+    "fields": {
+      "name": "Perpetua Fitness",
+      "category": "gym",
+      "location": "SRID=4326;POINT(-6.3005 53.348)",
+      "description": "CrossFit box in Stoneybatter"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 16,
+    "fields": {
+      "name": "West Wood Club Clontarf",
+      "category": "gym",
+      "location": "SRID=4326;POINT(-6.2187 53.3484)",
+      "description": "Health club beside Fairview Park"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 17,
+    "fields": {
+      "name": "Bank of Ireland Temple Bar",
+      "category": "atm",
+      "location": "SRID=4326;POINT(-6.2624 53.3466)",
+      "description": "24hr ATM on Temple Bar"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 18,
+    "fields": {
+      "name": "AIB Grafton Street",
+      "category": "atm",
+      "location": "SRID=4326;POINT(-6.256 53.3405)",
+      "description": "ATM outside AIB branch"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 19,
+    "fields": {
+      "name": "Ulster Bank Docklands",
+      "category": "atm",
+      "location": "SRID=4326;POINT(-6.2435 53.3457)",
+      "description": "ATM beside Bord G\u00e1is Energy Theatre"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 20,
+    "fields": {
+      "name": "Bank of Ireland Stoneybatter",
+      "category": "atm",
+      "location": "SRID=4326;POINT(-6.3081 53.3494)",
+      "description": "Neighbourhood ATM in Stoneybatter"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 21,
+    "fields": {
+      "name": "St Stephen's Green Park",
+      "category": "park",
+      "location": "SRID=4326;POINT(-6.2675 53.3402)",
+      "description": "Historic city centre park"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 22,
+    "fields": {
+      "name": "Phoenix Park Visitor Centre",
+      "category": "park",
+      "location": "SRID=4326;POINT(-6.3288 53.3568)",
+      "description": "Access point to Phoenix Park trails"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 23,
+    "fields": {
+      "name": "St Anne's Park Rose Garden",
+      "category": "park",
+      "location": "SRID=4326;POINT(-6.1727 53.3852)",
+      "description": "Feature area within St Anne's Park"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 24,
+    "fields": {
+      "name": "Merrion Square Park",
+      "category": "park",
+      "location": "SRID=4326;POINT(-6.2383 53.3388)",
+      "description": "Georgian garden square"
+    }
+  },
+  {
+    "model": "geo.amenity",
+    "pk": 25,
+    "fields": {
+      "name": "Fairview Park Playground",
+      "category": "park",
+      "location": "SRID=4326;POINT(-6.208 53.3606)",
+      "description": "Community park along the Tolka"
+    }
+  }
+]

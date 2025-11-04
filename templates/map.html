@@ -1,110 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-<style>
-  .result-card {
-    border: 1px solid rgba(13, 110, 253, 0.18);
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.85);
-    margin-bottom: 12px;
-    padding: 0;
-    width: 100%;
-    text-align: left;
-    box-shadow: 0 6px 18px rgba(15, 35, 95, 0.08);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-  .result-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(15, 35, 95, 0.12);
-  }
-  .result-card:focus-visible {
-    outline: 2px solid #0d6efd;
-    outline-offset: 4px;
-  }
-  .result-card__inner {
-    padding: 16px 18px;
-    display: grid;
-    gap: 10px;
-  }
-  .result-card__header {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-  .result-index {
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
-    background: rgba(13, 110, 253, 0.15);
-    color: #0d6efd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    flex-shrink: 0;
-  }
-  .result-title {
-    font-weight: 600;
-    font-size: 1.05rem;
-  }
-  .result-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 6px;
-  }
-  .result-card__meta {
-    display: grid;
-    gap: 4px;
-    font-size: 0.9rem;
-    color: #6c7a91;
-  }
-  .result-meta {
-    display: flex;
-    gap: 6px;
-  }
-  .meta-label {
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.7rem;
-    color: #8292ad;
-    font-weight: 600;
-  }
-  .result-card__actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .result-action {
-    color: #0d6efd;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-  .result-action:hover {
-    text-decoration: underline;
-  }
-</style>
 <div class="search-layout">
-  <aside class="glass-panel p-4">
+  <aside class="p-3">
     <div class="section-heading">Search Options</div>
-    <p class="text-muted small mb-3">
-      Pick a mode, apply quick filters, then click the map or focus on an area to surface the most relevant amenities.
-    </p>
-    <div id="statusBanner" class="alert alert-info status-banner d-none" role="status" aria-live="polite"></div>
+    <div id="statusBanner" class="alert alert-info d-none"></div>
 
     <div class="control-block">
       <label class="section-heading mb-2">Mode</label>
-      <div class="btn-group mode-toggle w-100" role="group" aria-label="Search mode">
+      <div class="btn-group w-100">
         <button type="button" class="btn btn-outline-primary active" data-mode="nearest">Nearby</button>
         <button type="button" class="btn btn-outline-primary" data-mode="radius">Radius</button>
       </div>
-      <small class="text-muted d-block mt-2">Click anywhere on the map to explore results.</small>
     </div>
 
     <div class="control-block">
-      <label class="section-heading mb-2" for="searchInput">Search</label>
-      <input id="searchInput" type="search" class="form-control form-control-sm" placeholder="Search by name, brand or street" autocomplete="off">
-      <small class="text-muted d-block mt-2">Filters apply instantly as you type.</small>
+      <label class="section-heading mb-2">Search</label>
+      <input id="searchInput" type="search" class="form-control" placeholder="Search amenities">
     </div>
 
     <div class="control-block">
@@ -117,84 +28,78 @@
         <button class="btn btn-chip" data-category="atm">ATMs</button>
         <button class="btn btn-chip" data-category="park">Parks</button>
       </div>
-      <small class="text-muted d-block mt-2">Select multiple categories to refine the results.</small>
     </div>
 
-    <div class="control-block" id="nearestControls">
-      <label class="section-heading mb-2">Nearby results</label>
-      <input id="nearestN" type="range" min="1" max="30" value="10" class="form-range" aria-label="Nearest amenities limit">
-      <div class="d-flex justify-content-between text-muted small">
-        <span>1</span>
-        <span class="slider-value" id="nearestValue">10</span>
-        <span>30</span>
-      </div>
-    </div>
+
 
     <div class="control-block d-none" id="radiusControls">
-      <label class="section-heading mb-2">Radius size (km)</label>
-      <input id="radiusKm" type="range" min="0.2" max="5" step="0.1" value="1.0" class="form-range" aria-label="Radius in kilometres">
+      <label class="section-heading mb-2">Radius (km)</label>
+      <input id="radiusKm" type="range" min="0.2" max="5" step="0.1" value="1.0" class="form-range">
       <div class="d-flex justify-content-between text-muted small">
         <span>0.2</span>
-        <span class="slider-value" id="radiusValue">1.0 km</span>
+        <span id="radiusValue">1.0 km</span>
         <span>5</span>
       </div>
     </div>
 
     <div class="control-block">
-      <label class="section-heading mb-2">Focus on an area</label>
-      <select id="areaSelect" class="form-select form-select-sm">
-        <option value="">Select an area outline</option>
+      <label class="section-heading mb-2">Select Area</label>
+      <select id="areaSelect" class="form-select">
+        <option value="">Choose an area</option>
       </select>
-      <small class="text-muted d-block mt-2">Choose a study area to load its polygon and highlight intersecting routes.</small>
     </div>
 
     <div class="d-grid gap-2">
-      <button id="locateMe" class="btn btn-primary" type="button">Use my location</button>
-      <button id="resetView" class="btn btn-outline-secondary" type="button">Reset map view</button>
-      <button id="btnClearRoutes" class="btn btn-outline-secondary" type="button">Clear intersecting routes</button>
+      <button id="locateMe" class="btn btn-primary">Use my location</button>
+      <button id="resetView" class="btn btn-outline-secondary">Reset view</button>
+      <button id="btnClearRoutes" class="btn btn-outline-secondary">Clear routes</button>
     </div>
   </aside>
 
-  <section class="glass-panel p-3">
-    <div class="map-shell mb-3">
-      <div id="map" role="region" aria-label="Map of Dublin amenities"></div>
+  <section class="p-3">
+    <div class="mb-3">
+      <div id="map"></div>
     </div>
-    <div class="glass-panel p-3">
-      <div class="d-flex align-items-center justify-content-between mb-3">
+    <div class="p-3 bg-white border rounded">
+      <div class="d-flex justify-content-between mb-3">
         <div>
-          <span class="section-heading mb-1 d-block">Results</span>
-          <span class="text-muted small" id="resultSummary" aria-live="polite">Click the map to begin exploring.</span>
+          <strong>Results</strong>
+          <div class="text-muted small" id="resultSummary">Click the map to explore.</div>
         </div>
-        <div id="loadingIndicator" class="spinner-border spinner-border-sm text-primary d-none" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
+        <div id="loadingIndicator" class="spinner-border spinner-border-sm d-none"></div>
       </div>
-      <div id="resultsList" class="sidebar" role="list" aria-live="polite"></div>
+      <div id="resultsList"></div>
     </div>
   </section>
 </div>
 
 <script>
 window.addEventListener("DOMContentLoaded", function() {
+  // check if browser supports geolocation
   if (!("geolocation" in navigator)) {
     document.body.classList.add("no-geolocation-support");
   }
+  
   function initMap() {
+    // wait for leaflet to load before initializing
     if (typeof L === "undefined") {
       setTimeout(initMap, 100);
       return;
     }
 
+    // create map centered on dublin city center
     const map = L.map("map", {
       scrollWheelZoom: true,
       zoomControl: true,
     }).setView([53.3498, -6.2603], 13);
 
+    // add openstreetmap tile layer
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "© OpenStreetMap contributors",
       maxZoom: 19,
     }).addTo(map);
 
+    // cache icons so we dont create the same one multiple times
     const amenityIconCache = new Map();
     const amenityIconSlugs = new Set(["cafe", "shop", "gym", "atm", "park", "default"]);
     function categoryToSlug(category) {
@@ -238,6 +143,7 @@ window.addEventListener("DOMContentLoaded", function() {
 
     const amenityLayerIndex = new Map();
 
+    // main layer for displaying amenity points with custom icons
     const amenitiesLayer = L.geoJSON(null, {
       pointToLayer: (feature, latlng) => {
         const category = feature?.properties?.category;
@@ -249,35 +155,43 @@ window.addEventListener("DOMContentLoaded", function() {
       onEachFeature: (feature, layer) => {
         const popupHTML = buildPopupContent(feature);
         layer.bindPopup(popupHTML);
+        // store in index so we can find and focus on markers later
         amenityLayerIndex.set(String(feature.id), layer);
       },
     }).addTo(map);
 
     const areasLayer = L.geoJSON(null, {
       style: { color: "#4c6ef5", weight: 2, fillOpacity: 0.08 },
+      onEachFeature: (feature, layer) => {
+        const name = feature.properties?.name || "Area";
+        layer.bindPopup(`<strong>${name}</strong>`);
+      },
+      interactive: false,
     }).addTo(map);
 
     const routesLayer = L.geoJSON(null, {
       style: { color: "#20c997", weight: 3 },
+      onEachFeature: (feature, layer) => {
+        const name = feature.properties?.name || "Route";
+        layer.bindPopup(`<strong>${name}</strong><br/><small>Click to view route details</small>`);
+      },
     }).addTo(map);
 
     const statusBanner = document.getElementById("statusBanner");
     const resultsList = document.getElementById("resultsList");
     const loadingIndicator = document.getElementById("loadingIndicator");
-    const nearestInput = document.getElementById("nearestN");
-    const nearestValue = document.getElementById("nearestValue");
     const radiusInput = document.getElementById("radiusKm");
     const radiusValue = document.getElementById("radiusValue");
-    const modeButtons = document.querySelectorAll(".mode-toggle .btn");
+    const modeButtons = document.querySelectorAll(".btn-group .btn[data-mode]");
     const searchInput = document.getElementById("searchInput");
     const categoryChips = Array.from(document.querySelectorAll("#categoryChips .btn-chip"));
     const areaSelect = document.getElementById("areaSelect");
-    const nearestSection = document.getElementById("nearestControls");
     const radiusSection = document.getElementById("radiusControls");
     const resultSummary = document.getElementById("resultSummary");
     const locateButton = document.getElementById("locateMe");
     let searchDebounce = null;
 
+    // app state object - centralized state management
     const state = {
       mode: "nearest",
       selectedCategories: new Set(),
@@ -320,12 +234,15 @@ window.addEventListener("DOMContentLoaded", function() {
 
     function rememberOrigin(mode, latlng, remember) {
       if (!remember) return;
-      if (mode === "nearest" || mode === "radius") {
-        state.lastOrigin[mode] = latlng;
+      if (mode === "nearest") {
+        state.lastOrigin.nearest = latlng;
+      } else if (mode === "radius") {
+        state.lastOrigin.radius = latlng;
       }
     }
 
     function parseDescription(description) {
+      // try to parse description as json if its a string otherwise return empty object
       if (!description) return {};
       if (typeof description === "object" && description !== null) return description;
       try {
@@ -337,6 +254,7 @@ window.addEventListener("DOMContentLoaded", function() {
     }
 
     function extractDetails(feature) {
+      // get structured details from either the details field or description field
       const explicit = feature?.properties?.details;
       if (explicit && typeof explicit === "object") {
         return explicit;
@@ -409,6 +327,7 @@ window.addEventListener("DOMContentLoaded", function() {
     }
 
     function updateRadiusOverlay(latlng, km) {
+      // show a circle on the map to visualize the search radius
       const radiusMeters = Number(km) * 1000;
       if (!radiusMarker) {
         radiusMarker = L.marker(latlng, { icon: radiusIcon, interactive: false }).addTo(map);
@@ -443,19 +362,26 @@ window.addEventListener("DOMContentLoaded", function() {
     }
 
     function updateUserMarker(latlng, accuracy, { pan = false } = {}) {
+      // place a marker at users current location with accuracy circle
       const hadLocation = Boolean(state.userLocation);
       state.userLocation = latlng;
+      
+      // remember this location as the default origin for searches
       if (!state.lastOrigin.nearest) {
         state.lastOrigin.nearest = latlng;
       }
       if (!state.lastOrigin.radius) {
         state.lastOrigin.radius = latlng;
       }
+      
+      // create or update the user location marker
       if (!userMarker) {
         userMarker = L.marker(latlng, { icon: userIcon, interactive: false }).addTo(map);
       } else {
         userMarker.setLatLng(latlng);
       }
+      
+      // show accuracy circle around user location if we have that info
       if (accuracy && !Number.isNaN(Number(accuracy))) {
         const radius = Math.max(Number(accuracy), 25);
         if (!userAccuracyCircle) {
@@ -472,57 +398,37 @@ window.addEventListener("DOMContentLoaded", function() {
           userAccuracyCircle.setRadius(radius);
         }
       }
+      
+      // pan map to user location if requested or if this is first time getting location
       if (pan || !hadLocation) {
         map.flyTo(latlng, Math.max(map.getZoom(), 14), { duration: 0.75 });
       }
     }
 
-    function secureContextAllowsGeolocation() {
-      if (window.isSecureContext) return true;
-      const host = window.location.hostname;
-      return host === "localhost" || host === "127.0.0.1";
-    }
-
     function attemptLocateUser({ manual = false } = {}) {
-      if (!secureContextAllowsGeolocation()) {
-        setStatus("Location access requires HTTPS or running on localhost. Click the map to explore manually.", "warning", true);
-        return;
-      }
+      // try to get users current location from browser geolocation api
       if (!navigator.geolocation) {
-        if (manual) {
-          setStatus("Geolocation is not supported in this browser. Click the map to explore manually.", "warning", true);
-        }
+        setStatus("Geolocation not supported", "warning");
         return;
-      }
-      if (manual) {
-        setStatus("Requesting your location…");
       }
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const latlng = L.latLng(position.coords.latitude, position.coords.longitude);
           updateUserMarker(latlng, position.coords.accuracy, { pan: true });
-          const label = manual ? "your updated location" : "your location";
-          if (state.mode === "radius") {
-            fetchAmenitiesRadius(latlng, { subjectLabel: label });
+          
+          // automatically search for nearby amenities if user clicked locate button or in nearest mode
+          if (manual || state.mode === "nearest") {
+            if (state.mode === "radius") {
+              fetchAmenitiesRadius(latlng);
+            } else {
+              fetchAmenitiesNearest(latlng);
+            }
           } else {
-            fetchAmenitiesNearest(latlng, { subjectLabel: label });
+            setStatus("Click the map to search for amenities", "info");
           }
         },
         (error) => {
-          let message = "Unable to access your location. Click the map to search manually.";
-          if (error.code === error.PERMISSION_DENIED) {
-            message = "Location permission was denied. You can still click the map to explore nearby places.";
-          } else if (error.code === error.POSITION_UNAVAILABLE) {
-            message = "Location information is currently unavailable. Try again shortly or click the map instead.";
-          } else if (error.code === error.TIMEOUT) {
-            message = "Locating you took too long. Try again or click directly on the map.";
-          }
-          setStatus(message, "warning", true);
-        },
-        {
-          enableHighAccuracy: true,
-          maximumAge: 60000,
-          timeout: 10000,
+          setStatus("Unable to get location. Click the map instead.", "warning");
         }
       );
     }
@@ -542,74 +448,29 @@ window.addEventListener("DOMContentLoaded", function() {
     function renderResults(features) {
       resultsList.innerHTML = "";
       if (!features || features.length === 0) {
-        resultsList.innerHTML = '<div class="text-muted small py-2">No amenities matched your filters.</div>';
+        resultsList.innerHTML = '<div class="text-muted">No results found.</div>';
         return;
       }
 
       features.forEach((feature, index) => {
         const card = document.createElement("button");
-        card.type = "button";
         card.className = "result-card";
-        card.setAttribute("role", "listitem");
 
         const props = feature.properties || {};
-        const name = props.name || "Unnamed amenity";
-        const category = (props.category || "amenity").toUpperCase();
+        const name = props.name || "Unnamed";
+        const category = props.category || "amenity";
         const distanceLabel = formatDistance(props.distance);
-        const details = extractDetails(feature);
-        const address = formatAddress(details);
-
-        const metaRows = [];
-        if (address) {
-          metaRows.push(`<div class="result-meta"><span class="meta-label">Address</span>${address}</div>`);
-        }
-        if (details.opening_hours) {
-          metaRows.push(`<div class="result-meta"><span class="meta-label">Hours</span>${details.opening_hours}</div>`);
-        }
-        if (details.cuisine) {
-          metaRows.push(`<div class="result-meta"><span class="meta-label">Cuisine</span>${details.cuisine}</div>`);
-        }
-        if (details.operator || details.brand) {
-          const parts = [details.operator, details.brand].filter(Boolean).join(" · ");
-          metaRows.push(`<div class="result-meta"><span class="meta-label">Operator</span>${parts}</div>`);
-        }
-        if (details.note) {
-          metaRows.push(`<div class="result-meta"><span class="meta-label">Note</span>${details.note}</div>`);
-        }
-
-        const actions = [];
-        if (details.phone) {
-          const tel = details.phone.replace(/\s+/g, "");
-          actions.push(`<a class="result-action" href="tel:${tel}">Call</a>`);
-        }
-        if (details.website) {
-          actions.push(`<a class="result-action" href="${details.website}" target="_blank" rel="noopener">Website</a>`);
-        }
 
         card.innerHTML = `
-          <div class="result-card__inner">
-            <div class="result-card__header">
-              <div class="result-index">${index + 1}</div>
-              <div>
-                <div class="result-title">${name}</div>
-                <div class="result-badges">
-                  <span class="badge text-bg-light">${category}</span>
-                  ${distanceLabel ? `<span class="badge text-bg-primary-subtle text-primary-emphasis">${distanceLabel}</span>` : ""}
-                </div>
-              </div>
-            </div>
-            ${metaRows.length ? `<div class="result-card__meta">${metaRows.join("")}</div>` : ""}
-            ${actions.length ? `<div class="result-card__actions">${actions.join("")}</div>` : ""}
+          <span class="result-index">${index + 1}</span>
+          <div>
+            <div class="result-title">${name}</div>
+            <span class="badge bg-secondary">${category}</span>
+            ${distanceLabel ? `<span class="badge bg-primary ms-1">${distanceLabel}</span>` : ""}
           </div>
         `;
 
         card.addEventListener("click", () => focusAmenity(feature.id));
-        card.addEventListener("keydown", (event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            focusAmenity(feature.id);
-          }
-        });
         resultsList.appendChild(card);
       });
     }
@@ -625,8 +486,10 @@ window.addEventListener("DOMContentLoaded", function() {
     }
 
     function applyFilters(features) {
+      // filter amenities by selected categories and search text on the client side
       let filtered = Array.isArray(features) ? features.slice() : [];
 
+      // filter by category chips if any are selected
       if (state.selectedCategories.size > 0) {
         filtered = filtered.filter(feature => {
           const category = feature?.properties?.category;
@@ -634,6 +497,7 @@ window.addEventListener("DOMContentLoaded", function() {
         });
       }
 
+      // filter by search term across name and detail fields
       if (state.searchTerm) {
         filtered = filtered.filter(feature => {
           const props = feature.properties || {};
@@ -656,7 +520,6 @@ window.addEventListener("DOMContentLoaded", function() {
     }
 
     function updateRangeLabels() {
-      nearestValue.textContent = nearestInput.value;
       radiusValue.textContent = `${Number(radiusInput.value).toFixed(1)} km`;
     }
 
@@ -691,7 +554,8 @@ window.addEventListener("DOMContentLoaded", function() {
     }
 
     function fetchAmenitiesNearest(latlng, { remember = true, subjectLabel = null } = {}) {
-      const limit = nearestInput.value || 10;
+      // fetch the nearest 30 amenities from the api and display them
+      const limit = 30;
       const url = new URL("/api/amenities/nearest", window.location.origin);
       url.searchParams.set("lat", latlng.lat);
       url.searchParams.set("lng", latlng.lng);
@@ -704,9 +568,11 @@ window.addEventListener("DOMContentLoaded", function() {
       setLoading(true);
       const targetLabel = subjectLabel || `${latlng.lat.toFixed(4)}, ${latlng.lng.toFixed(4)}`;
       setStatus(`Fetching nearest amenities near ${targetLabel}…`);
+      
       fetch(url)
         .then(handleResponse)
         .then(fc => {
+          // apply client side filters and update map
           const features = applyFilters(fc.features || []);
           syncAmenityLayer(features);
           if (features.length > 0) {
@@ -719,38 +585,59 @@ window.addEventListener("DOMContentLoaded", function() {
         })
         .catch(error => setStatus(error.message, "danger", true))
         .finally(() => setLoading(false));
+      
       rememberOrigin("nearest", latlng, remember);
     }
 
     function fetchAmenitiesRadius(latlng, { remember = true, subjectLabel = null } = {}) {
+      // fetch amenities and routes within a radius from the api
       const km = radiusInput.value || 1.0;
-      const url = new URL("/api/amenities/radius", window.location.origin);
-      url.searchParams.set("lat", latlng.lat);
-      url.searchParams.set("lng", latlng.lng);
-      url.searchParams.set("km", km);
+      const amenitiesUrl = new URL("/api/amenities/radius", window.location.origin);
+      amenitiesUrl.searchParams.set("lat", latlng.lat);
+      amenitiesUrl.searchParams.set("lng", latlng.lng);
+      amenitiesUrl.searchParams.set("km", km);
       if (state.areaId) {
-        url.searchParams.set("area_id", state.areaId);
+        amenitiesUrl.searchParams.set("area_id", state.areaId);
       }
 
+      const routesUrl = new URL("/api/routes/radius", window.location.origin);
+      routesUrl.searchParams.set("lat", latlng.lat);
+      routesUrl.searchParams.set("lng", latlng.lng);
+      routesUrl.searchParams.set("km", km);
+
+      // show the radius circle on map
       updateRadiusOverlay(latlng, km);
       setLoading(true);
       const targetLabel = subjectLabel || `${latlng.lat.toFixed(4)}, ${latlng.lng.toFixed(4)}`;
       setStatus(`Searching within ${km} km of ${targetLabel}…`);
-      fetch(url)
-        .then(handleResponse)
-        .then(fc => {
-          const features = applyFilters(fc.features || []);
+      
+      // fetch both amenities and routes in parallel
+      Promise.all([
+        fetch(amenitiesUrl).then(handleResponse),
+        fetch(routesUrl).then(handleResponse)
+      ])
+        .then(([amenitiesFC, routesFC]) => {
+          // filter and display amenities
+          const features = applyFilters(amenitiesFC.features || []);
           syncAmenityLayer(features);
+          
+          // add routes to map
+          routesLayer.clearLayers();
+          if (routesFC.features && routesFC.features.length > 0) {
+            routesLayer.addData(routesFC);
+          }
+          
           if (features.length > 0) {
             map.flyTo(latlng, Math.max(map.getZoom(), 14), { duration: 0.75 });
           }
           renderResults(features);
           const label = targetLabel;
-          setStatus(`Found ${features.length} amenities within ${km} km of ${label}.`, "success");
+          setStatus(`Found ${features.length} amenities and ${routesFC.features?.length || 0} routes within ${km} km.`, "success");
           resultSummary.textContent = `Amenities within ${km} km of ${label}.`;
         })
         .catch(error => setStatus(error.message, "danger", true))
         .finally(() => setLoading(false));
+      
       rememberOrigin("radius", latlng, remember);
     }
 
@@ -803,7 +690,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
     function setMode(newMode) {
       state.mode = newMode;
-      nearestSection.classList.toggle("d-none", newMode !== "nearest");
       radiusSection.classList.toggle("d-none", newMode !== "radius");
       map.getContainer().style.cursor = newMode === "radius" ? "crosshair" : "";
       const hint = newMode === "nearest"
@@ -911,16 +797,11 @@ window.addEventListener("DOMContentLoaded", function() {
         return String(id) === areaId;
       });
       if (matchingLayer) {
-        map.fitBounds(matchingLayer.getBounds(), { padding: [30, 30] });
+        map.fitBounds(matchingLayer.getBounds(), { padding: [50, 50] });
         fetchRoutesIntersecting(areaId);
-        replayActiveSearch();
-      }
-    });
-
-    nearestInput.addEventListener("input", () => {
-      updateRangeLabels();
-      if (state.mode === "nearest") {
-        replayActiveSearch();
+        setStatus("Area selected. Routes highlighted. Click the map to search for amenities.", "success");
+      } else {
+        setStatus("Could not find area boundaries.", "warning");
       }
     });
 
@@ -931,36 +812,11 @@ window.addEventListener("DOMContentLoaded", function() {
       }
     });
 
-    areasLayer.on("click", (event) => {
-      const feature = event.layer.feature;
-      const areaId = feature.id || feature?.properties?.id;
-      if (!areaId) {
-        setStatus("Selected area does not have an identifier.", "warning");
-        return;
-      }
-      areaSelect.value = areaId;
-      state.areaId = String(areaId);
-      fetchRoutesIntersecting(areaId);
-      replayActiveSearch();
-    });
-
     updateCategoryChipsUI();
     fetchAreas(true);
     updateRangeLabels();
     setMode(state.mode);
-    if (navigator.permissions && navigator.permissions.query) {
-      navigator.permissions.query({ name: "geolocation" }).then(result => {
-        if (result.state === "denied") {
-          setStatus("Location access has been blocked in your browser settings. Use the button above after re-enabling it or click the map manually.", "warning", true);
-        } else if (result.state === "granted") {
-          attemptLocateUser();
-        } else {
-          attemptLocateUser();
-        }
-      }).catch(() => attemptLocateUser());
-    } else {
-      attemptLocateUser();
-    }
+    attemptLocateUser();
   }
 
   initMap();

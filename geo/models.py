@@ -28,6 +28,7 @@ class Amenity(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORIES)
     location = models.PointField(srid=4326)
     description = models.TextField(blank=True, default="")
+    source_ref = models.CharField(max_length=64, unique=True, blank=True, null=True)
 
     def __str__(self):
         return f"{self.name} ({self.category})"

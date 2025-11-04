@@ -1,0 +1,34 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {"type": "Feature", "id": 1, "geometry": {"type": "Point", "coordinates": [-6.2477, 53.3434]}, "properties": {"name": "3fe Grand Canal", "category": "cafe", "description": "Specialty coffee roastery beside the canal"}},
+    {"type": "Feature", "id": 2, "geometry": {"type": "Point", "coordinates": [-6.2593, 53.3437]}, "properties": {"name": "Bewley's Grafton Street", "category": "cafe", "description": "Historic café serving tea and pastries"}},
+    {"type": "Feature", "id": 3, "geometry": {"type": "Point", "coordinates": [-6.2654, 53.3445]}, "properties": {"name": "Queen of Tarts", "category": "cafe", "description": "Bakery café famous for desserts"}},
+    {"type": "Feature", "id": 4, "geometry": {"type": "Point", "coordinates": [-6.2502, 53.3391]}, "properties": {"name": "Herbstreet", "category": "cafe", "description": "Brunch spot overlooking Grand Canal Dock"}},
+    {"type": "Feature", "id": 5, "geometry": {"type": "Point", "coordinates": [-6.2460, 53.3483]}, "properties": {"name": "Brother Hubbard North", "category": "cafe", "description": "Middle Eastern inspired café"}},
+    {"type": "Feature", "id": 6, "geometry": {"type": "Point", "coordinates": [-6.2619, 53.3473]}, "properties": {"name": "The Temple Bar Pub", "category": "cafe", "description": "Iconic pub with coffee and light bites"}},
+
+    {"type": "Feature", "id": 7, "geometry": {"type": "Point", "coordinates": [-6.2641, 53.3479]}, "properties": {"name": "SPAR Dame Street", "category": "shop", "description": "Convenience store beside Trinity College"}},
+    {"type": "Feature", "id": 8, "geometry": {"type": "Point", "coordinates": [-6.2425, 53.3444]}, "properties": {"name": "Fresh Grand Canal", "category": "shop", "description": "Modern supermarket near the tech district"}},
+    {"type": "Feature", "id": 9, "geometry": {"type": "Point", "coordinates": [-6.2721, 53.3556]}, "properties": {"name": "Tesco Parnell Street", "category": "shop", "description": "Large supermarket on Parnell Street"}},
+    {"type": "Feature", "id": 10, "geometry": {"type": "Point", "coordinates": [-6.2288, 53.3489]}, "properties": {"name": "Lidl North Strand", "category": "shop", "description": "Discount supermarket serving East Wall"}},
+    {"type": "Feature", "id": 11, "geometry": {"type": "Point", "coordinates": [-6.3437, 53.3743]}, "properties": {"name": "SuperValu Lucan", "category": "shop", "description": "Community supermarket in Lucan village"}},
+
+    {"type": "Feature", "id": 12, "geometry": {"type": "Point", "coordinates": [-6.2470, 53.3380]}, "properties": {"name": "Flyefit Macken Street", "category": "gym", "description": "24/7 city centre gym"}},
+    {"type": "Feature", "id": 13, "geometry": {"type": "Point", "coordinates": [-6.2695, 53.3385]}, "properties": {"name": "Flyefit George's Street", "category": "gym", "description": "Gym with studio classes and weights"}},
+    {"type": "Feature", "id": 14, "geometry": {"type": "Point", "coordinates": [-6.2419, 53.3553]}, "properties": {"name": "Ben Dunne Gym Northwood", "category": "gym", "description": "Large suburban gym"}},
+    {"type": "Feature", "id": 15, "geometry": {"type": "Point", "coordinates": [-6.3005, 53.3480]}, "properties": {"name": "Perpetua Fitness", "category": "gym", "description": "CrossFit box in Stoneybatter"}},
+    {"type": "Feature", "id": 16, "geometry": {"type": "Point", "coordinates": [-6.2187, 53.3484]}, "properties": {"name": "West Wood Club Clontarf", "category": "gym", "description": "Health club beside Fairview Park"}},
+
+    {"type": "Feature", "id": 17, "geometry": {"type": "Point", "coordinates": [-6.2624, 53.3466]}, "properties": {"name": "Bank of Ireland Temple Bar", "category": "atm", "description": "24hr ATM on Temple Bar"}},
+    {"type": "Feature", "id": 18, "geometry": {"type": "Point", "coordinates": [-6.2560, 53.3405]}, "properties": {"name": "AIB Grafton Street", "category": "atm", "description": "ATM outside AIB branch"}},
+    {"type": "Feature", "id": 19, "geometry": {"type": "Point", "coordinates": [-6.2435, 53.3457]}, "properties": {"name": "Ulster Bank Docklands", "category": "atm", "description": "ATM beside Bord Gáis Energy Theatre"}},
+    {"type": "Feature", "id": 20, "geometry": {"type": "Point", "coordinates": [-6.3081, 53.3494]}, "properties": {"name": "Bank of Ireland Stoneybatter", "category": "atm", "description": "Neighbourhood ATM in Stoneybatter"}},
+
+    {"type": "Feature", "id": 21, "geometry": {"type": "Point", "coordinates": [-6.2675, 53.3402]}, "properties": {"name": "St Stephen's Green Park", "category": "park", "description": "Historic city centre park"}},
+    {"type": "Feature", "id": 22, "geometry": {"type": "Point", "coordinates": [-6.3288, 53.3568]}, "properties": {"name": "Phoenix Park Visitor Centre", "category": "park", "description": "Access point to Phoenix Park trails"}},
+    {"type": "Feature", "id": 23, "geometry": {"type": "Point", "coordinates": [-6.1727, 53.3852]}, "properties": {"name": "St Anne's Park Rose Garden", "category": "park", "description": "Feature area within St Anne's Park"}},
+    {"type": "Feature", "id": 24, "geometry": {"type": "Point", "coordinates": [-6.2383, 53.3388]}, "properties": {"name": "Merrion Square Park", "category": "park", "description": "Georgian garden square"}},
+    {"type": "Feature", "id": 25, "geometry": {"type": "Point", "coordinates": [-6.2080, 53.3606]}, "properties": {"name": "Fairview Park Playground", "category": "park", "description": "Community park along the Tolka"}}
+  ]
+}
